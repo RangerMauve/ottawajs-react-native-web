@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<title>React Native Web</title>
+<meta charset="utf-8">
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Yanone+Kaffeesatz);
+  @import url(https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic);
+  @import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:400,700,400italic);
+
+  body { font-family: 'Droid Serif', Ariel; }
+	.hidden {
+		display: none;
+	}
+  h1, h2, h3 {
+    font-family: 'Yanone Kaffeesatz';
+    font-weight: normal;
+  }
+	li { margin-top: 2em}
+  .remark-code, .remark-inline-code { font-family: 'Ubuntu Mono'; }
+	.smallImage {
+		width: 64px;
+		height: 64px;
+	}
+	.white {
+		color: #fafafa
+	}
+	.inverted {
+		color: #fafafa;
+		background: #222 !important;
+	}
+
+	.blue {
+		background: white;
+		border: 0.5em solid #05A5D1;
+		background-size: cover;
+		background-repeat: no-repeat;
+	}
+</style>
+<textarea id="source" class="hidden">
+
+layout: true
+class: blue
+
+---
+
+class: center, middle
+background-image: url(https://cdn.worldvectorlogo.com/logos/react.svg)
+background-size: contain
+
+# React Native Web
+
+By [Georgiy S](https://github.com/rangermauve)
+
+---
+
+class: center, middle, white
+background-image: url(https://media.giphy.com/media/3oz8xZvvOZRmKay4xy/giphy.gif)
+background-size: cover
+
+## What is it?
+
+---
+
+### React
+
+- Declarative API that turns your UI into a function of your application state
+- Component system for re-using UI logic in a clean and maintainable way
+- Made by Facebook so you know it's fancy
+
+---
+
+### ReactDOM
+- Takes the virtual representation of your UI created by React and JSX, and updates the DOM to look like it
+-
+- Used to be bundled as part of React
+
+---
+
+class: inverted, middle
+
+### ReactDOM Example
+
+```javascript
+const styles = {
+	text: {
+		color: "red"
+	}
+};
+
+const App = () => <span style={styles.text}>Hello World!</span>
+
+ReactDOM.render(
+	<App />,
+	document.getElementById("root")
+)
+```
+
+---
+
+### ReactNative
+- Instead of converting to a DOM, it generates native UI elements on Android and iOS
+- Your application code is run inside a JavaScript runtime which is totally separated from a browser
+- The actual `app` code required for setting the app up on the OS is porovided by ReactNative
+- Your JS code can be the same on either platform, and ReactNative will interface with platform-specific APIs to render the UI and interface with the app
+
+---
+
+class: inverted, middle
+
+### ReactNative Example
+
+```javascript
+const styles = StyleSheet.create({
+	text: {
+		color: "red"
+	}
+});
+
+const App = () => <Text style={styles.text}>Hello World!</Text>
+
+AppRegistry.registerComponent("MyApp", () => App)
+```
+
+---
+
+### ReactNativeWeb
+
+- Implements most of the API of ReactNative
+- Instead of rendering to a native UI, it uses ReactDOM under the hood
+- Allows you to write components in JS in ReactNative and reuse them for the web
+- Since ReactNative's API is straightforward, it makes deciding on project structure easier
+
+---
+
+class: inverted, middle
+
+### ReactNativeWeb Example
+
+```javascript
+const styles = StyleSheet.create({
+	text: {
+		color: "red"
+	}
+});
+
+const App = () => <Text style={styles.text}>Hello World!</Text>
+
+AppRegistry.registerComponent("MyApp", () => App)
+
+AppRegistry.runApplication("MyApp", {
+	rootTag: document.getElementById("root")
+})
+```
+
+---
+
+class: center, middle, white
+background-image: url(https://media.giphy.com/media/lRv7XL9l5xuFO/giphy.gif)
+
+## Setting up a project
+
+---
+
+class: center, middle
+
+### Create a project with create-react-app
+
+```bash
+# Install create-react-app
+npm install -g create-react-app
+
+# Create a new project
+create-react-app MyApp
+```
+
+---
+
+class: center, middle
+
+### Install dependencies
+
+```bash
+npm install --save react-native-web
+```
+
+---
+
+class: center, middle
+
+### Clean up CRA code
+
+Delete everything  out of `MyApp/src`
+
+Forget it ever existed. It's a brave new world out there.
+
+---
+
+class: inverted
+
+### Create your main App component in src/App.js
+
+```JavaScript
+import React from 'react'
+import {
+	StyleSheet, Text, View
+} from 'react-native'
+
+const styles = StyleSheet.create({
+	app: {
+		padding: 64,
+		backgroundColor: "#420666",
+		alignItems: "center",
+	},
+	text: {
+		color: "#FFFFFF",
+		fontSize: 32,
+	}
+});
+
+
+export default function App(){
+	return (
+		<View style={styles.app}>
+			<Text style={styles.text}>Hello World!</Text>
+		</View>
+	);
+}
+```
+
+---
+
+class: inverted
+
+### Set up src/index.js
+
+```javascript
+import React from 'react'
+import { AppRegistry } from 'react-native'
+
+import App from "./App";
+
+// App registration and rendering
+AppRegistry.registerComponent('MyApp', () => App)
+
+AppRegistry.runApplication('MyApp', {
+	rootTag: document.getElementById('root')
+})
+```
+
+---
+
+class: center, middle, white
+background-image: url(https://media.giphy.com/media/a1cCNAOGJpupO/giphy.gif)
+
+## Finding libraries
+
+---
+
+### Things to consider
+
+- Existing pure JS libs work out of the box
+- React-Native libraries don't work if they use ES6 and JSX
+- Browser-based alternatives sometimes exist (universal libraries)
+- Ejecting from create-react-app lets you configure which libraries get compiled
+
+---
+
+### Compiling react-native librarires that use ES6
+
+- Eject from create-react-app
+
+```bash
+npm run eject
+```
+
+- Modify the babel-loader rule in the webpack config to compile native libs
+
+```javascript
+// Before
+include: paths.appSrc
+
+// After
+include: [
+  paths.appSrc,
+  /node_modules[\\\/]react-native-.*/
+]
+```
+
+---
+
+### Alias libraries in package.json
+
+Browserify introduced a `browser` field for node modules to alias files to work in browsers
+
+Example:
+
+```javascript
+{
+	"name": "MyApp",
+	"browser": {
+		"react-native-ble": "noble"
+	}
+}
+
+// Will actually resolve to `noble` when compiled for web
+import BLE from "react-native-ble";
+```
+
+_Projects containing both react-native and react-native-web will also want to add a `react-native` field_
+
+---
+
+### Abusing `.ios.js` and `.android.js`
+
+- Used to have files with the same interface target specific platforms
+- If you provide both `foo.ios.js` and `foo.android.js`, you can have `foo.js` target web
+
+```bash
+- WelcomPage.ios.js
+- WelcomPage.android.js
+- WelcomPage.js <-- This will be imported only on web
+```
+
+---
+
+### Missing APIs / Issues
+
+- Anything platform-specific
+- ListView's are unoptimized
+- WebView
+- Animated implementation is janky and abandoned
+- Camera / File interactions
+- Geolocation
+- Basically anything that isn't available in a browser
+
+---
+
+## Further reading
+
+- [ReactNativeWeb documentation](https://github.com/necolas/react-native-web)
+- [ReactNative documentation](https://facebook.github.io/react-native/docs/getting-started.html)
+- [Create React App](https://github.com/facebookincubator/create-react-app)
+- [The code for this presentation](https://github.com/RangerMauve/ottawajs-react-native-web)
+- [ReactVR (Implements much of the same API as Native)](https://facebook.github.io/react-vr/)
+
+---
+
+class: center, middle
+background-image: url(https://cdn.worldvectorlogo.com/logos/react.svg)
+background-size: contain
+
+# Thank you
+
+
+</textarea>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js">
+</script>
+<script>
+  var slideshow = remark.create();
+</script>

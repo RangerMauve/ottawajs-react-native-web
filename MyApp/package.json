@@ -1,0 +1,22 @@
+{
+  "name": "MyApp",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "react-scripts": "1.0.7"
+  },
+  "dependencies": {
+    "react": "^15.6.0",
+    "react-dom": "^15.6.0",
+    "react-native-web": "0.0.102"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browser": {
+    "react-native": "react-native-web"
+  }
+}

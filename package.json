@@ -1,0 +1,22 @@
+{
+  "name": "ottawajs-react-native-web",
+  "version": "1.0.0",
+	"private": true,
+	"description": "Presentation for OttawaJS on React-Native-Web",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RangerMauve/ottawajs-react-native-web.git"
+  },
+  "keywords": [
+    "react",
+    "native",
+    "web",
+    "presentation"
+  ],
+  "author": "rangermauve",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RangerMauve/ottawajs-react-native-web/issues"
+  },
+  "homepage": "https://github.com/RangerMauve/ottawajs-react-native-web#readme"
+}
